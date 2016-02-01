@@ -1,0 +1,16 @@
+---
+
+  - hosts: all
+    sudo: True
+
+    pre_tasks:
+      - name: Update APT Cache
+        apt: update_cache=yes
+
+    roles:
+      - { role: "cartodb.postgresql" }
+      - { role: "cartodb.redis" }
+      - { role: "cartodb.sqlapi" }
+      - { role: "cartodb.windshaft" }
+      - { role: "cartodb.app" }
+      - { role: "cartodb.resque" }

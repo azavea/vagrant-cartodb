@@ -1,0 +1,15 @@
+---
+
+ - name: Add cartodb redis ppa
+   apt_repository: repo=ppa:cartodb/redis state=present update_cache=yes
+
+ - name: Install redis
+   apt: name=redis-server state=present
+
+ # TODO: Add redis persistence configuration:
+ #          By default redis server is configured to not have any type of disk persistence.
+ #          If stopped or restarted everything stored in redis will be lost.
+ #          In CartoDB redis is not just a simple cache storage. It stores information
+ #          that needs to be persisted.
+ #          Make sure to have proper values of save, appendonly and appendfsync config
+ #          attributes. For more information check http://redis.io/topics/persistence

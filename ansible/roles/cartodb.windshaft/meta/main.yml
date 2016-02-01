@@ -1,0 +1,5 @@
+---
+
+dependencies:
+ - { role: "cartodb.nodejs" }
+ - { role: "cartodb.gis" }

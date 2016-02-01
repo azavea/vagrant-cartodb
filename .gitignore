@@ -1,0 +1,17 @@
+# Vagrant dir
+.vagrant
+
+# OSXIgnore
+**/.DS_Store
+
+*~
+*.doctree
+*.swp
+*.swo
+*.pyc
+*.suo
+*.user
+*.sql3
+
+# Ansible roles
+ansible/roles/azavea.*

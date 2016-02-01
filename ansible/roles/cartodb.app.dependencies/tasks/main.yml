@@ -1,0 +1,48 @@
+---
+
+ - name: Install CartoDB apt dependencies
+   apt: name={{ item }} state=present
+   with_items:
+     - python-all-dev
+     - imagemagick
+     - unp
+     - zip
+
+ - name: Install ruby gem dependencies
+   apt: name={{ item }} state=present
+   with_items:
+     - libreadline6-dev
+     - openssl
+
+ - name: Install ruby gems
+   gem: name={{ item }} state=present user_install=no
+   with_items:
+     - bundler
+     - compass
+
+ - name: Add RAILS_ENV variable to global environment
+   lineinfile: dest=/etc/environment line="RAILS_ENV={{ cartodb_environment }}"
+
+ # TODO: Replace with bundler module if we want to only use ansible 2.0.0+
+ - name: Install ruby bundle
+   shell: bash -lc "bundle install" chdir={{ cartodb_dir }}
+   sudo: False
+
+ - name: Install global node packages
+   npm: name={{ item }} state=present global=yes
+   with_items:
+     - grunt-cli
+
+ - name: Install node packages
+   npm: path={{ cartodb_dir }}
+   sudo: False
+
+ - name: Upgrade pip to latest version
+   pip: name=pip state=latest
+
+ - name: Install python packages
+   pip: requirements=python_requirements.txt chdir={{ cartodb_dir }} extra_args='--no-use-wheel'
+   environment:
+     CPLUS_INCLUDE_PATH: /usr/include/gdal
+     C_INCLUDE_PATH: /usr/include/gdal
+     PATH: "{{ ansible_env.PATH }}:/usr/include/gdal"

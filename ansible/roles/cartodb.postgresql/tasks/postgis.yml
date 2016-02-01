@@ -1,0 +1,34 @@
+---
+
+ - name: Install postgis
+   apt: name={{ item }} state=present
+   with_items:
+    - libxml2-dev
+    - postgresql-9.3-postgis-2.2
+    - postgresql-9.3-postgis-scripts
+
+ - name: Make sure template_postgis exists
+   postgresql_db: db=template_postgis state=present encoding=UTF-8 template=template0 port={{ postgresql_port }}
+   sudo_user: postgres
+   register: createdb_template_postgis
+
+ - name: Spatially enable the template database
+   command: psql -p {{ postgresql_port }} -d template_postgis -c "CREATE EXTENSION IF NOT EXISTS postgis;"
+   sudo_user: postgres
+   when: createdb_template_postgis.changed
+
+ - name: Add postgis topology extension
+   command: psql -p {{ postgresql_port }} -d template_postgis -c "CREATE EXTENSION IF NOT EXISTS postgis_topology;"
+   sudo_user: postgres
+   when: createdb_template_postgis.changed
+
+ - name: Allow non-superusers the ability to create from postgis template
+   sudo_user: postgres
+   command: psql -p {{ postgresql_port }} -d postgres -c "UPDATE pg_database SET datistemplate='true' WHERE datname='template_postgis';"
+   when: createdb_template_postgis.changed
+
+ - name: Run ldconfig
+   command: ldconfig
+
+ - name: Restart postgresql
+   service: name=postgresql state=restarted
