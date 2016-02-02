@@ -35,7 +35,9 @@ cartodb_user_email: cartodb@example.com
 # cartodb.sqlapi
 cartodb_sqlapi_dir: "{{ root_dir }}/cartodb_sql_api"
 cartodb_sqlapi_version: 1.25.3
+cartodb_sqlapi_host: 0.0.0.0
 
 # cartodb.windshaft
 cartodb_windshaft_dir: "{{ root_dir }}/cartodb_windshaft"
 cartodb_windshaft_version: 2.20.0
+cartodb_windshaft_host: 0.0.0.0

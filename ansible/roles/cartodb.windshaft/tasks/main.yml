@@ -22,12 +22,9 @@
      creates: "{{ cartodb_windshaft_dir }}/config/environments/{{ cartodb_environment }}.js"
      chdir: "{{ cartodb_windshaft_dir }}"
 
- # TODO: Template this if necessary
  - name: Copy template config
-   command: cp config/environments/{{ cartodb_environment }}.js.example config/environments/{{ cartodb_environment }}.js
+   template: src={{ cartodb_environment }}.js.j2 dest={{ cartodb_windshaft_dir }}/config/environments/{{ cartodb_environment }}.js
    sudo: False
-   args:
-     chdir: "{{ cartodb_windshaft_dir }}"
 
  - name: Copy CartoDB Windshaft upstart job
    template: src=cartodb_windshaft.conf.j2 dest=/etc/init/cartodb_windshaft.conf

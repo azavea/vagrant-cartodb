@@ -17,12 +17,9 @@
      creates: "{{ cartodb_sqlapi_dir }}/config/environments/{{ cartodb_environment }}.js"
      chdir: "{{ cartodb_sqlapi_dir }}"
 
- # TODO: Template this if necessary
  - name: Copy template config
-   command: cp config/environments/{{ cartodb_environment }}.js.example config/environments/{{ cartodb_environment }}.js
+   template: src={{ cartodb_environment }}.js.j2 dest={{ cartodb_sqlapi_dir }}/config/environments/{{ cartodb_environment }}.js
    sudo: False
-   args:
-     chdir: "{{ cartodb_sqlapi_dir }}"
 
  - name: Copy CartoDB SQL API upstart job
    template: src=cartodb_sqlapi.conf.j2 dest=/etc/init/cartodb_sqlapi.conf
