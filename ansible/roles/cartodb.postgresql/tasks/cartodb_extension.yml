@@ -5,8 +5,7 @@
 
  - name: Install cartodb-postgresql extension
    command: make all install
+   notify:
+     - Restart PostgreSQL
    args:
      chdir: "{{ cartodb_postgresql_dir }}"
-
- - name: Restart postgresql
-   service: name=postgresql state=restarted

@@ -8,10 +8,8 @@ stop on runlevel [!2345]
 respawn
 # Kill respawn if more than 5 restarts in 20 mins
 respawn limit 5 20
+chdir {{ cartodb_dir }}
 
 script
-    APP_ROOT={{ cartodb_dir }}
-
-    cd $APP_ROOT
     sudo -u {{ ansible_ssh_user }} RAILS_ENV={{ cartodb_environment }} bundle exec rails server
 end script

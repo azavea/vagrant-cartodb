@@ -1,7 +1,8 @@
 ---
 
  - name: Ensure pid file dir exists
-   command: mkdir -p {{ cartodb_resque_pid_dir }}
+   file: path="{{ cartodb_resque_pid_dir }}"
+         state=directory
    sudo: False
 
  - name: Copy resque worker job template

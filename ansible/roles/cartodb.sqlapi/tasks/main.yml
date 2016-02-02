@@ -11,11 +11,10 @@
    sudo: False
 
  - name: Touch CartoDB SQL API config file
-   command: touch config/environments/{{ cartodb_environment }}.js
-   sudo: False
-   args:
-     creates: "{{ cartodb_sqlapi_dir }}/config/environments/{{ cartodb_environment }}.js"
-     chdir: "{{ cartodb_sqlapi_dir }}"
+   file: path="{{ cartodb_sqlapi_dir }}/config/environments/{{ cartodb_environment }}.js"
+         state=touch
+         owner="{{ ansible_ssh_user }}"
+         group="{{ ansible_ssh_user }}"
 
  - name: Copy template config
    template: src={{ cartodb_environment }}.js.j2 dest={{ cartodb_sqlapi_dir }}/config/environments/{{ cartodb_environment }}.js

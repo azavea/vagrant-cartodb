@@ -29,6 +29,5 @@
 
  - name: Run ldconfig
    command: ldconfig
-
- - name: Restart postgresql
-   service: name=postgresql state=restarted
+   notify:
+     - Restart PostgreSQL

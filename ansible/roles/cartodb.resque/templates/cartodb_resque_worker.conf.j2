@@ -8,13 +8,11 @@ stop on runlevel [!2345]
 respawn
 # Kill respawn if more than 5 restarts in 20 mins
 respawn limit 5 20
+chdir {{ cartodb_dir }}
 
 instance $WORKERNUM
 
 script
-    APP_ROOT={{ cartodb_dir }}
     RESQUEPID1={{ cartodb_resque_pid_dir }}/resque$WORKERNUM.pid
-
-    cd $APP_ROOT
     sudo -u {{ ansible_ssh_user }} PIDFILE=$RESQUEPID1 QUEUE=* bundle exec rake environment resque:work
 end script

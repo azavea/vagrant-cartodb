@@ -25,8 +25,10 @@
 
  # TODO: Replace with bundler module if we want to only use ansible 2.0.0+
  - name: Install ruby bundle
-   shell: bash -lc "bundle install" chdir={{ cartodb_dir }}
+   command: bundle install
    sudo: False
+   args:
+     chdir: "{{ cartodb_dir }}"
 
  - name: Install global node packages
    npm: name={{ item }} state=present global=yes

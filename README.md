@@ -16,6 +16,12 @@ git clone --recursive https://github.com/cartodb/cartodb ../cartodb
 If this path is already in use for some reason, you can clone the repo elsewhere,
 and update the path in the Vagrantfile.
 
+Then, copy the template group vars file:
+```
+cp ansible/group_vars/all.example ansible/group_vars/all
+```
+
+
 Lastly, you'll need to add the following entries in your hosts file to point to the VM:
 ```
 192.168.20.100 development.localhost.lan

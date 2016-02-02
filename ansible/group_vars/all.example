@@ -9,7 +9,7 @@ pip_version: 1.0*-1build1
 
 # azavea.ruby
 ruby_version: 2.2
-ruby_development: True
+ruby_development: False
 
 # cartodb.postgresql
 postgresql_version: 9.3
@@ -31,6 +31,7 @@ cartodb_user_subdomain: development
 cartodb_user_password: cartodb
 cartodb_user_admin_password: cartodb
 cartodb_user_email: cartodb@example.com
+cartodb_compile_assets: True
 
 # cartodb.sqlapi
 cartodb_sqlapi_dir: "{{ root_dir }}/cartodb_sql_api"

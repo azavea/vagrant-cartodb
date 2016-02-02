@@ -23,8 +23,7 @@ ANSIBLE_GROUPS = {
 Vagrant.configure("2") do |config|
 
   config.vm.define "cartodb" do |cartodb|
-    cartodb.vm.box = "precise64"
-    cartodb.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/precise/current/precise-server-cloudimg-amd64-vagrant-disk1.box"
+    cartodb.vm.box = "ubuntu/precise64"
     cartodb.vm.hostname = "cartodb"
     cartodb.vm.network "private_network", ip: "192.168.20.100"
 

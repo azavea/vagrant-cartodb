@@ -5,6 +5,7 @@
    sudo: False
    args:
      chdir: "{{ cartodb_dir }}"
+   when: cartodb_compile_assets
 
  # TODO: Template if necessary
  - name: Create app_config.yml
@@ -12,6 +13,7 @@
    sudo: False
    args:
      chdir: "{{ cartodb_dir }}"
+     creates: "{{ cartodb_dir }}/config/app_config.yml"
 
  # TODO: Template if necessary
  - name: Create database.yml
@@ -19,6 +21,7 @@
    sudo: False
    args:
      chdir: "{{ cartodb_dir }}"
+     creates: "{{ cartodb_dir }}/config/database.yml"
 
  - name: Create CartoDB database
    command: bundle exec rake db:create
