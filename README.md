@@ -11,7 +11,7 @@ Before running `vagrant up`, install the following on your host machine:
 
 Then, clone the CartoDB repo to `../cartodb`:
 ```
-git clone --recursive https://github.com/cartodb/cartodb ../cartodb
+git clone --branch 3.12.2 --recursive https://github.com/cartodb/cartodb ../cartodb
 ```
 If this path is already in use for some reason, you can clone the repo elsewhere,
 and update the path in the Vagrantfile.
@@ -39,3 +39,6 @@ and login with:
 # Configuring the VM
 
 All ansible configuration options can be set via variables in `ansible/group_vars/all`
+
+If you would like to use a different tag of the cartodb repo, be sure to change the associated
+versions of the sql api, windshaft, and the postgresql extension in `ansible/group_vars/all`
