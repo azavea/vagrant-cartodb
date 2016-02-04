@@ -1,0 +1,9 @@
+---
+
+essential_packages:
+  - autoconf
+  - binutils-doc
+  - bison
+  - build-essential
+  - flex
+  - python-software-properties

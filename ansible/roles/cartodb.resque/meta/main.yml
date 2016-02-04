@@ -1,0 +1,4 @@
+---
+
+dependencies:
+ - { role: "cartodb.app.dependencies" }

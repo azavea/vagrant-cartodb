@@ -1,0 +1,8 @@
+---
+
+ - name: Add CartoDB GIS Repo
+   apt_repository: repo=ppa:cartodb/gis state=present update_cache=yes
+
+ - name: Install GIS packages
+   apt: name={{ item }} state=present
+   with_items: gis_packages

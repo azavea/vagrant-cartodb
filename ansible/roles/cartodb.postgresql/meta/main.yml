@@ -1,0 +1,5 @@
+---
+
+dependencies:
+ - { role: "cartodb.essential" }
+ - { role: "cartodb.gis" }

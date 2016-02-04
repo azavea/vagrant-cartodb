@@ -1,0 +1,17 @@
+---
+
+gis_packages:
+  - proj
+  - proj-bin
+  - proj-data
+  - libproj-dev
+  - libjson0
+  - libjson0-dev
+  - python-simplejson
+  - libgeos-c1v5
+  - libgeos-dev
+  - gdal-bin
+  - libgdal1-dev
+  - libgdal-dev
+  - libgdal1h
+  - ogr2ogr2-static-bin

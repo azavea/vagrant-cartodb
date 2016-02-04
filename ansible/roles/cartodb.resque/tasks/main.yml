@@ -1,0 +1,16 @@
+---
+
+ - name: Ensure pid file dir exists
+   file: path="{{ cartodb_resque_pid_dir }}"
+         state=directory
+   sudo: False
+
+ - name: Copy resque worker job template
+   template: src=cartodb_resque_worker.conf.j2 dest=/etc/init/cartodb_resque_worker.conf
+
+ - name: Copy resque launcher template
+   template: src=cartodb_start_resque.conf.j2 dest=/etc/init/cartodb_start_resque.conf
+
+ - name: Restart resque workers
+   command: service cartodb_resque_worker restart WORKERNUM={{ item }}
+   with_sequence: count={{ cartodb_resque_workers }}
