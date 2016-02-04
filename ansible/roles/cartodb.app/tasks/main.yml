@@ -1,0 +1,54 @@
+---
+
+ - name: Precompile static assets
+   command: bundle exec grunt --environment {{ cartodb_environment }}
+   sudo: False
+   args:
+     chdir: "{{ cartodb_dir }}"
+   when: cartodb_compile_assets
+
+ # TODO: Template if necessary
+ - name: Create app_config.yml
+   command: cp config/app_config.yml.sample config/app_config.yml
+   sudo: False
+   args:
+     chdir: "{{ cartodb_dir }}"
+     creates: "{{ cartodb_dir }}/config/app_config.yml"
+
+ # TODO: Template if necessary
+ - name: Create database.yml
+   command: cp config/database.yml.sample config/database.yml
+   sudo: False
+   args:
+     chdir: "{{ cartodb_dir }}"
+     creates: "{{ cartodb_dir }}/config/database.yml"
+
+ - name: Create CartoDB database
+   command: bundle exec rake db:create
+   sudo: False
+   args:
+     chdir: "{{ cartodb_dir }}"
+
+ - name: Migrate CartoDB database
+   command: bundle exec rake db:migrate
+   sudo: False
+   args:
+     chdir: "{{ cartodb_dir }}"
+
+ - name: Create a cartodb user
+   command: bundle exec rake cartodb:db:create_user SUBDOMAIN="{{ cartodb_user_subdomain }}" PASSWORD="{{ cartodb_user_password }}" EMAIL="{{ cartodb_user_email }}"
+   sudo: False
+   args:
+     chdir: "{{ cartodb_dir }}"
+
+ - name: Add cartodb user subdomain to hosts file
+   lineinfile: dest=/etc/hosts line="127.0.0.1 {{ cartodb_user_subdomain }}.{{ cartodb_hostname }}"
+
+ - name: Add cartodb hostname to hosts file
+   lineinfile: dest=/etc/hosts line="127.0.0.1 {{ cartodb_hostname }}"
+
+ - name: Copy rails server job template
+   template: src=cartodb_server.conf.j2 dest=/etc/init/cartodb_server.conf
+
+ - name: Start the CartoDB rails server
+   service: name=cartodb_server state=restarted

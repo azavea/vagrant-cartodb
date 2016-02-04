@@ -1,0 +1,30 @@
+---
+
+ - name: Clone CartoDB SQL API repo
+   git: repo=https://github.com/CartoDB/CartoDB-SQL-API.git dest={{ cartodb_sqlapi_dir }} version={{ cartodb_sqlapi_version }}
+
+ - name: Chown cartodb_sqlapi_dir to ansible_ssh_user
+   file: path={{ cartodb_sqlapi_dir }} state=directory recurse=yes owner={{ ansible_ssh_user }} group={{ ansible_ssh_user }}
+
+ - name: Install npm dependencies
+   npm: path={{ cartodb_sqlapi_dir }}
+   sudo: False
+
+ - name: Touch CartoDB SQL API config file
+   file: path="{{ cartodb_sqlapi_dir }}/config/environments/{{ cartodb_environment }}.js"
+         state=touch
+         owner="{{ ansible_ssh_user }}"
+         group="{{ ansible_ssh_user }}"
+
+ - name: Copy template config
+   template: src={{ cartodb_environment }}.js.j2 dest={{ cartodb_sqlapi_dir }}/config/environments/{{ cartodb_environment }}.js
+   sudo: False
+
+ - name: Copy CartoDB SQL API upstart job
+   template: src=cartodb_sqlapi.conf.j2 dest=/etc/init/cartodb_sqlapi.conf
+
+ - name: Set permissions for CartoDB SQL API Service
+   file: mode=0644 owner=root group=root path=/etc/init/cartodb_sqlapi.conf
+
+ - name: Restart CartoDB SQL API upstart job
+   service: name=cartodb_sqlapi state=restarted

@@ -1,0 +1,7 @@
+---
+
+ - name: Add cartodb nodejs ppa
+   apt_repository: repo=ppa:cartodb/nodejs-010 state=present update_cache=yes
+
+ - name: Install nodejs 0.10.x
+   apt: name=nodejs state=present
