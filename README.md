@@ -1,5 +1,5 @@
 # ansible-cartodb
-Ansible role to build a multi-machine vagrant setup for CartoDB
+Ansible role to build a vagrant setup for CartoDB
 
 Currently targets tag 3.12.2 on January 29, 2016
 
