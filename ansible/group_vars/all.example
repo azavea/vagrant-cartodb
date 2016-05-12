@@ -9,7 +9,7 @@ pip_version: 1.0*-1build1
 
 # azavea.ruby
 ruby_version: 2.2
-ruby_development: False
+ruby_development: True
 
 # cartodb.postgresql
 postgresql_version: 9.3
