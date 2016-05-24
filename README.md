@@ -31,24 +31,6 @@ Copy the template group vars file:
 cp ansible/group_vars/all.example ansible/group_vars/all
 ```
 
-#### Copy CartoDB app configuration (optional)
-
-This step is only necessary if you will be developing on the front-end assets.
-```
-cp ../cartodb/config/app_config.yml.sample ../cartodb/config/app_config.yml
-```
-Open the copied app_config.yml file and comment out the lines that look like this:
-```
-
-app_assets:
-  asset_host: "//cartodb-libs.global.ssl.fastly.net/cartodbui"
-# should become...
-
-# app_assets:
-# asset_host: "//cartodb-libs.global.ssl.fastly.net/cartodbui"
-
-```
-
 #### Update hosts file
 
 Add the following entries in your hosts file to point to the VM:
