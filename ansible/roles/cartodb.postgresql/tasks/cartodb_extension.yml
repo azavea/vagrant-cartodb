@@ -1,8 +1,5 @@
 ---
 
- - name: Clone cartodb_postgresql repo
-   git: repo=https://github.com/CartoDB/cartodb-postgresql.git dest={{ cartodb_postgresql_dir }} version={{ cartodb_postgresql_version }}
-
  - name: Install cartodb-postgresql extension
    command: make all install
    notify:
