@@ -40,7 +40,7 @@ Vagrant.configure("2") do |config|
 
     cartodb.vm.provider :virtualbox do |v|
       v.memory = ENV.fetch("CARTODB_MEM", 4096)
-      v.cpus = ENV.fetch("CARTODB_DATABASE_CPU", 3)
+      v.cpus = ENV.fetch("CARTODB_CPUS", 3)
     end
   end
 end
