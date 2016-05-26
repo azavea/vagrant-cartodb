@@ -2,7 +2,7 @@
 Ansible role to build a vagrant-based development box for CartoDB
 
 
-## Requirements
+## Getting started
 
 Before running `vagrant up`, do the following:
 
@@ -46,8 +46,35 @@ and login with:
  - Username: development
  - Password: cartodb
 
+#### Services in the VM
+
+The cartodb services (unicorn, resque, sql api, windshaft) are controlled via upstart. The service
+names are:
+- `cartodb_server` - Unicorn web worker processes
+- `cartodb_resque_worker` - A single resque worker process (the VM runs two)
+- `cartodb_windshaft` - Windshaft server
+- `cartodb_sqlapi` - CartoDB SQL API server
+
+Examples:
+```
+sudo service cartodb_server restart
+sudo service cartodb_resque_worker restart WORKERNUM=1
+sudo service cartodb_windshaft stop
+```
+
 
 ## Configuring the VM
+
+#### Vagrant configuration
+
+The following ENV variables are available. They should be set before a `vagrant up`.
+- `CARTODB_CPUS` - Number of CPUs to provide to the VM (default: `3`)
+- `CARTODB_MEM` - Memory to provide to the VM (default: `4096`)
+- `CARTODB_PRIVATE_IP` -  Private IP to provide to the vm (default: `192.168.20.100`)
+- `CARTODB_SRC_DIR`: Relative directory path to a cartodb repository (default: `../cartodb`)
+
+
+#### Ansible configuration
 
 All ansible configuration options can be set via variables in `ansible/group_vars/all`
 
