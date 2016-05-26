@@ -4,8 +4,9 @@
    apt: name={{ item }} state=present
    with_items:
     - libxml2-dev
-    - postgresql-9.3-postgis-2.2
-    - postgresql-9.3-postgis-scripts
+    - postgis
+    - postgresql-{{ postgresql_version }}-postgis-2.2
+    - postgresql-{{ postgresql_version }}-postgis-scripts
 
  - name: Make sure template_postgis exists
    postgresql_db: db=template_postgis state=present encoding=UTF-8 template=template0 port={{ postgresql_port }}

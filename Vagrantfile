@@ -25,10 +25,10 @@ Vagrant.configure("2") do |config|
   config.vm.define "cartodb" do |cartodb|
     cartodb.vm.box = "ubuntu/precise64"
     cartodb.vm.hostname = "cartodb"
-    cartodb.vm.network "private_network", ip: "192.168.20.100"
+    cartodb.vm.network "private_network", ip: ENV.fetch("CARTODB_PRIVATE_IP", "192.168.20.100")
 
     cartodb.vm.synced_folder ".", "/vagrant", disabled: true
-    cartodb.vm.synced_folder "../cartodb", "/opt/cartodb", type: "nfs"
+    cartodb.vm.synced_folder ENV.fetch("CARTODB_SRC_DIR", "../cartodb"), "/opt/cartodb", type: "nfs"
 
     cartodb.vm.provision "ansible" do |ansible|
       ansible.playbook = "ansible/cartodb.yml"
@@ -40,7 +40,7 @@ Vagrant.configure("2") do |config|
 
     cartodb.vm.provider :virtualbox do |v|
       v.memory = ENV.fetch("CARTODB_MEM", 4096)
-      v.cpus = ENV.fetch("CARTODB_DATABASE_CPU", 3)
+      v.cpus = ENV.fetch("CARTODB_CPUS", 3)
     end
   end
 end

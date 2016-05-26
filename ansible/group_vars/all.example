@@ -1,4 +1,5 @@
 root_dir: /opt
+cartodb_dir: "{{ root_dir }}/cartodb"
 
 # azavea.python
 python_version: 2.7.3-0ubuntu2.2
@@ -9,23 +10,21 @@ pip_version: 1.0*-1build1
 
 # azavea.ruby
 ruby_version: 2.2
-ruby_development: False
+ruby_development: True
 
 # cartodb.postgresql
-postgresql_version: 9.3
+postgresql_version: 9.5
 postgresql_port: 5432
 postgresql_hba_mapping:
   - { type: "local", database: "all", user: "all", address: "", method: "trust" }
   - { type: "local", database: "all", user: "postgres", address: "", method: "trust" }
   - { type: "host", database: "all", user: "all", address: "127.0.0.1/32", method: "trust" }
-cartodb_postgresql_dir: "{{ root_dir }}/cartodb_postgresql"
-cartodb_postgresql_version: 0.11.5
-
+cartodb_postgresql_dir: "{{ cartodb_dir }}/lib/sql"
 
 # cartodb.app
 # TODO: Support other RAILS_ENV configurations (staging|production)
+# TODO: Properly template cartodb_hostname into app_config and database config
 cartodb_environment: development
-cartodb_dir: "{{ root_dir }}/cartodb"
 cartodb_hostname: localhost.lan
 cartodb_user_subdomain: development
 cartodb_user_password: cartodb
@@ -33,12 +32,20 @@ cartodb_user_admin_password: cartodb
 cartodb_user_email: cartodb@example.com
 cartodb_compile_assets: True
 
+# cartodb app_config.yml
+cartodb_cdn_assets: False
+cartodb_common_data_protocol: 'https'
+cartodb_common_data_username: 'common-data'
+cartodb_common_data_base_url: 'https://common-data.cartodb.com'
+cartodb_common_data_format: 'shp'
+cartodb_common_data_generate_every: 86400
+
 # cartodb.sqlapi
 cartodb_sqlapi_dir: "{{ root_dir }}/cartodb_sql_api"
-cartodb_sqlapi_version: 1.25.3
+cartodb_sqlapi_version: master
 cartodb_sqlapi_host: 0.0.0.0
 
 # cartodb.windshaft
 cartodb_windshaft_dir: "{{ root_dir }}/cartodb_windshaft"
-cartodb_windshaft_version: 2.20.0
+cartodb_windshaft_version: master
 cartodb_windshaft_host: 0.0.0.0

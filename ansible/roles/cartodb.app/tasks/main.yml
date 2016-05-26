@@ -7,21 +7,17 @@
      chdir: "{{ cartodb_dir }}"
    when: cartodb_compile_assets
 
- # TODO: Template if necessary
- - name: Create app_config.yml
-   command: cp config/app_config.yml.sample config/app_config.yml
-   sudo: False
-   args:
-     chdir: "{{ cartodb_dir }}"
-     creates: "{{ cartodb_dir }}/config/app_config.yml"
+ - name: Touch app_config.yml to ensure it exists
+   file: path="{{ cartodb_dir }}/config/app_config.yml" state=touch
 
- # TODO: Template if necessary
- - name: Create database.yml
-   command: cp config/database.yml.sample config/database.yml
-   sudo: False
-   args:
-     chdir: "{{ cartodb_dir }}"
-     creates: "{{ cartodb_dir }}/config/database.yml"
+ - name: Copy app_config.yml template
+   template: src=app_config.yml.j2 dest="{{ cartodb_dir }}/config/app_config.yml"
+
+ - name: Touch database.yml to ensure it exists
+   file: path="{{ cartodb_dir }}/config/database.yml" state=touch
+
+ - name: Copy database.yml template
+   template: src=database.yml.j2 dest="{{ cartodb_dir }}/config/database.yml"
 
  - name: Create CartoDB database
    command: bundle exec rake db:create
