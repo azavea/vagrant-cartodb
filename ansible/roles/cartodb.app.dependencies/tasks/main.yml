@@ -24,11 +24,15 @@
    lineinfile: dest=/etc/environment line="RAILS_ENV={{ cartodb_environment }}"
 
  # TODO: Replace with bundler module if we want to only use ansible 2.0.0+
+ #- name: Install ruby bundle
+ #  command: bundle install
+ #  sudo: False
+ #  args:
+ #    chdir: "{{ cartodb_dir }}"
+
  - name: Install ruby bundle
-   command: bundle install
+   bundler: state=present chdir="{{ cartodb_dir }}"
    sudo: False
-   args:
-     chdir: "{{ cartodb_dir }}"
 
  - name: Install global node packages
    npm: name={{ item }} state=present global=yes
