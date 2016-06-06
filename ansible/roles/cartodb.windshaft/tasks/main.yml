@@ -13,7 +13,7 @@
 
  - name: Install npm dependencies
    npm: path={{ cartodb_windshaft_dir }}
-   sudo: False
+   become_user: "{{ ansible_ssh_user }}"
 
  - name: Touch CartoDB Windshaft config file
    file: path="{{ cartodb_windshaft_dir }}/config/environments/{{ cartodb_environment }}.js"
@@ -23,7 +23,7 @@
 
  - name: Copy template config
    template: src={{ cartodb_environment }}.js.j2 dest={{ cartodb_windshaft_dir }}/config/environments/{{ cartodb_environment }}.js
-   sudo: False
+   become_user: "{{ ansible_ssh_user }}"
 
  - name: Copy CartoDB Windshaft upstart job
    template: src=cartodb_windshaft.conf.j2 dest=/etc/init/cartodb_windshaft.conf

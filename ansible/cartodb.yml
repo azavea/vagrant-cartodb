@@ -1,7 +1,9 @@
 ---
 
   - hosts: all
-    sudo: True
+    become: True
+    become_method: sudo
+    become_user: root
 
     pre_tasks:
       - name: Update APT Cache

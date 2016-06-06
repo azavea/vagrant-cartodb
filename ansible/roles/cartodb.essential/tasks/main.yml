@@ -2,7 +2,7 @@
 
  - name: Install essential CartoDB packages
    apt: name={{ item }} state=present
-   with_items: essential_packages
+   with_items: "{{ essential_packages }}"
 
  - name: Generate UTF8 encoding
    command: locale-gen en_US.UTF-8

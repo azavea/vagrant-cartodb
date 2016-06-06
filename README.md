@@ -11,7 +11,7 @@ Before running `vagrant up`, do the following:
 
 On your host machine, install:
   - vagrant 1.6+
-  - ansible 1.8.4+
+  - ansible 1.9+
 
 
 #### Clone CartoDB
