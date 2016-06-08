@@ -38,6 +38,10 @@ cartodb_common_data_user_email: commondata@example.com
 cartodb_common_data_user_password: cartodb
 cartodb_common_data_user_data_quota: 20.gigabytes
 
+# whether to import common datasets to local account as part of provision
+# (should only be true if cartodb_common_data_local is also true)
+cartodb_common_data_import: False
+
 # cartodb app_config.yml
 cartodb_cdn_assets: False
 cartodb_common_data_protocol: 'https'

@@ -46,6 +46,7 @@
 
  - name: Remove table limit for common data user
    command: bundle exec rake cartodb:db:remove_table_quota USER_NAME="{{ cartodb_common_data_username }}"
+   become_user: "{{ ansible_ssh_user }}"
    args:
      chdir: "{{ cartodb_dir }}"
    when: cartodb_common_data_local
@@ -69,9 +70,10 @@
    args:
      chdir: "{{ cartodb_dir }}"
    register: import_result
-   when: cartodb_common_data_local
+   when: cartodb_common_data_import
 
  - debug: var=import_result.stdout_lines
+   when: cartodb_common_data_import
 
  - name: Start the CartoDB rails server
    service: name=cartodb_server state=restarted
