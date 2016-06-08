@@ -23,12 +23,9 @@
  - name: Add RAILS_ENV variable to global environment
    lineinfile: dest=/etc/environment line="RAILS_ENV={{ cartodb_environment }}"
 
- # TODO: Replace with bundler module if we want to only use ansible 2.0.0+
  - name: Install ruby bundle
-   command: bundle install
-   sudo: False
-   args:
-     chdir: "{{ cartodb_dir }}"
+   bundler: state=present chdir="{{ cartodb_dir }}"
+   become_user: "{{ ansible_ssh_user }}"
 
  - name: Install global node packages
    npm: name={{ item }} state=present global=yes
@@ -37,7 +34,7 @@
 
  - name: Install node packages
    npm: path={{ cartodb_dir }}
-   sudo: False
+   become_user: "{{ ansible_ssh_user }}"
 
  - name: Upgrade pip to latest version
    pip: name=pip state=latest

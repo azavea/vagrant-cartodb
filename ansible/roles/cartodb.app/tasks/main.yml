@@ -2,7 +2,7 @@
 
  - name: Precompile static assets
    command: bundle exec grunt --environment {{ cartodb_environment }}
-   sudo: False
+   become_user: "{{ ansible_ssh_user }}"
    args:
      chdir: "{{ cartodb_dir }}"
    when: cartodb_compile_assets
@@ -21,19 +21,19 @@
 
  - name: Create CartoDB database
    command: bundle exec rake db:create
-   sudo: False
+   become_user: "{{ ansible_ssh_user }}"
    args:
      chdir: "{{ cartodb_dir }}"
 
  - name: Migrate CartoDB database
    command: bundle exec rake db:migrate
-   sudo: False
+   become_user: "{{ ansible_ssh_user }}"
    args:
      chdir: "{{ cartodb_dir }}"
 
  - name: Create a cartodb user
    command: bundle exec rake cartodb:db:create_user SUBDOMAIN="{{ cartodb_user_subdomain }}" PASSWORD="{{ cartodb_user_password }}" EMAIL="{{ cartodb_user_email }}"
-   sudo: False
+   become_user: "{{ ansible_ssh_user }}"
    args:
      chdir: "{{ cartodb_dir }}"
 

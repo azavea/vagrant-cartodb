@@ -5,4 +5,4 @@
 
  - name: Install GIS packages
    apt: name={{ item }} state=present
-   with_items: gis_packages
+   with_items: "{{ gis_packages }}"

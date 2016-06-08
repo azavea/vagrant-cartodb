@@ -8,7 +8,7 @@
 
  - name: Install npm dependencies
    npm: path={{ cartodb_sqlapi_dir }}
-   sudo: False
+   become_user: "{{ ansible_ssh_user }}"
 
  - name: Touch CartoDB SQL API config file
    file: path="{{ cartodb_sqlapi_dir }}/config/environments/{{ cartodb_environment }}.js"
@@ -18,7 +18,7 @@
 
  - name: Copy template config
    template: src={{ cartodb_environment }}.js.j2 dest={{ cartodb_sqlapi_dir }}/config/environments/{{ cartodb_environment }}.js
-   sudo: False
+   become_user: "{{ ansible_ssh_user }}"
 
  - name: Copy CartoDB SQL API upstart job
    template: src=cartodb_sqlapi.conf.j2 dest=/etc/init/cartodb_sqlapi.conf

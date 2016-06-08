@@ -3,7 +3,7 @@
  - name: Ensure pid file dir exists
    file: path="{{ cartodb_resque_pid_dir }}"
          state=directory
-   sudo: False
+   become_user: "{{ ansible_ssh_user }}"
 
  - name: Copy resque worker job template
    template: src=cartodb_resque_worker.conf.j2 dest=/etc/init/cartodb_resque_worker.conf

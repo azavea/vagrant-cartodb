@@ -20,6 +20,12 @@ ANSIBLE_GROUPS = {
   "cartodb-servers" => [ "cartodb" ]
 }
 
+MOUNT_OPTIONS = if Vagrant::Util::Platform.linux? then
+                  ['rw', 'vers=4', 'tcp', 'nolock']
+                else
+                  ['vers=3', 'udp']
+                end
+
 Vagrant.configure("2") do |config|
 
   config.vm.define "cartodb" do |cartodb|
@@ -28,7 +34,7 @@ Vagrant.configure("2") do |config|
     cartodb.vm.network "private_network", ip: ENV.fetch("CARTODB_PRIVATE_IP", "192.168.20.100")
 
     cartodb.vm.synced_folder ".", "/vagrant", disabled: true
-    cartodb.vm.synced_folder ENV.fetch("CARTODB_SRC_DIR", "../cartodb"), "/opt/cartodb", type: "nfs"
+    cartodb.vm.synced_folder ENV.fetch("CARTODB_SRC_DIR", "../cartodb"), "/opt/cartodb", type: "nfs", mount_options: MOUNT_OPTIONS
 
     cartodb.vm.provision "ansible" do |ansible|
       ansible.playbook = "ansible/cartodb.yml"

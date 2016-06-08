@@ -34,11 +34,11 @@
 
  - name: Add cartodb publicuser
    postgresql_user: name=publicuser port={{ postgresql_port }} state=present role_attr_flags=NOCREATEROLE,NOSUPERUSER,NOCREATEDB
-   sudo_user: postgres
+   become_user: postgres
 
  - name: Add cartodb tileuser
    postgresql_user: name=tileuser port={{ postgresql_port }} state=present role_attr_flags=NOCREATEROLE,NOSUPERUSER,NOCREATEDB
-   sudo_user: postgres
+   become_user: postgres
 
  - include: postgis.yml
 
