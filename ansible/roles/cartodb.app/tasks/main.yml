@@ -37,14 +37,43 @@
    args:
      chdir: "{{ cartodb_dir }}"
 
+ - name: Create a common data user
+   command: bundle exec rake cartodb:db:create_user QUOTA_IN_BYTES="{{ cartodb_common_data_user_data_quota }}" SUBDOMAIN="{{ cartodb_common_data_username }}" PASSWORD="{{ cartodb_common_data_user_password }}" EMAIL="{{ cartodb_common_data_user_email }}"
+   become_user: "{{ ansible_ssh_user }}"
+   args:
+     chdir: "{{ cartodb_dir }}"
+   when: cartodb_common_data_local
+
+ - name: Remove table limit for common data user
+   command: bundle exec rake cartodb:db:remove_table_quota USER_NAME="{{ cartodb_common_data_username }}"
+   become_user: "{{ ansible_ssh_user }}"
+   args:
+     chdir: "{{ cartodb_dir }}"
+   when: cartodb_common_data_import
+
  - name: Add cartodb user subdomain to hosts file
    lineinfile: dest=/etc/hosts line="127.0.0.1 {{ cartodb_user_subdomain }}.{{ cartodb_hostname }}"
+
+ - name: Add common data user subdomain to hosts file
+   lineinfile: dest=/etc/hosts line="127.0.0.1 {{ cartodb_common_data_username }}.{{ cartodb_hostname }}"
+   when: cartodb_common_data_local
 
  - name: Add cartodb hostname to hosts file
    lineinfile: dest=/etc/hosts line="127.0.0.1 {{ cartodb_hostname }}"
 
  - name: Copy rails server job template
    template: src=cartodb_server.conf.j2 dest=/etc/init/cartodb_server.conf
+
+ - name: Import common data to local user
+   command: bundle exec rake cartodb:common_data:import_common_data
+   become_user: "{{ ansible_ssh_user }}"
+   args:
+     chdir: "{{ cartodb_dir }}"
+   register: import_result
+   when: cartodb_common_data_import
+
+ - debug: var=import_result.stdout_lines
+   when: cartodb_common_data_import
 
  - name: Start the CartoDB rails server
    service: name=cartodb_server state=restarted

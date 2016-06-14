@@ -19,3 +19,5 @@ ansible/roles/azavea.*
 # Ansible group_vars
 ansible/group_vars/all
 
+# Ansible retry files
+ansible/*.retry
