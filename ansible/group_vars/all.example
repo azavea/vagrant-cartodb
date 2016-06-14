@@ -39,7 +39,9 @@ cartodb_common_data_user_password: cartodb
 cartodb_common_data_user_data_quota: 20.gigabytes
 
 # whether to import common datasets to local account as part of provision
-# (should only be true if cartodb_common_data_local is also true)
+# Enabling this flag uses rake tasks not provided by the CartoDB repository.
+# Also set cartodb_common_base_url to 'http://common-data.localhost.lan:3000' for local data source.
+# This flag should only be true if cartodb_common_data_local is also true.
 cartodb_common_data_import: False
 
 # cartodb app_config.yml
