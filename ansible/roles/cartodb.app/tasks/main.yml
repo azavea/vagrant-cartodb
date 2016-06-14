@@ -49,7 +49,7 @@
    become_user: "{{ ansible_ssh_user }}"
    args:
      chdir: "{{ cartodb_dir }}"
-   when: cartodb_common_data_local
+   when: cartodb_common_data_import
 
  - name: Add cartodb user subdomain to hosts file
    lineinfile: dest=/etc/hosts line="127.0.0.1 {{ cartodb_user_subdomain }}.{{ cartodb_hostname }}"
