@@ -1,0 +1,83 @@
+server {
+  listen 80;
+
+  client_max_body_size 500m;
+  server_name _;
+  keepalive_timeout 30;
+  root {{ cartodb_dir }}/public;
+  try_files $uri/index.html $uri.html $uri @cartodb;
+
+  location @cartodb {
+      proxy_pass http://localhost:3000;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header Host $http_host;
+      proxy_redirect off;
+      proxy_set_header X-Forwarded-Proto $scheme;
+      proxy_set_header X-Sendfile-Type X-Accel-Redirect;
+  }
+  location /tiles {
+      proxy_pass http://localhost:8181;
+      proxy_redirect off;
+      proxy_set_header Host $host;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      # SSL: Pass on SSL if necessary
+      #proxy_set_header X-Forwarded-Proto $scheme;
+  }
+  location /api/v1/maps {
+      proxy_pass http://localhost:3000;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header Host $http_host;
+      proxy_redirect off;
+      proxy_set_header X-Forwarded-Proto $scheme;
+  }
+  # Cannot be an exact match or things are not routed correctly, the previous block catches /maps
+  # this one forwards requests to the windshaft server
+  location /api/v1/map {
+      proxy_pass http://localhost:8181/api/v1/map;
+      proxy_set_header Host $host;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      # SSL: Pass on SSL if necessary
+      #proxy_set_header X-Forwarded-Proto $scheme;
+  }
+  location /api/v1/sql {
+      proxy_pass http://localhost:8080;
+      proxy_redirect off;
+      proxy_set_header Host $host;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header Access-Control-Allow-Origin *;
+      proxy_set_header Access-Control-Allow-Headers 'X-Requested-With,X-Prototype-Version,X-CSRF-Token';
+      # SSL: Pass on SSL if necessary
+      #proxy_set_header X-Forwarded-Proto $scheme;
+  }
+  location /api/v2/sql {
+      proxy_pass http://localhost:8080;
+      proxy_redirect off;
+      proxy_set_header Host $host;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header Access-Control-Allow-Origin *;
+      proxy_set_header Access-Control-Allow-Headers 'X-Requested-With,X-Prototype-Version,X-CSRF-Token';
+      # SSL: Pass on SSL if necessary
+      #proxy_set_header X-Forwarded-Proto $scheme;
+  }
+  # This is the endpoint that cartodb.js uses for requesting visualization tiles
+  location /tilecache/ {
+      rewrite ^/tilecache/(.*)/api/v1/map/(.*) http://$1.$server_name/tiles/layergroup/$2;
+  }
+  error_page 403 /403.html;
+  location = /403.html {
+    root {{ cartodb_dir }}/public;
+    allow all;
+  }
+  error_page 404 /404.html;
+  location = /404.html {
+    root {{ cartodb_dir }}/public;
+  }
+  error_page 500 502 503 504 /500.html;
+  location = /500.html {
+    root {{ cartodb_dir }}/public;
+  }
+}

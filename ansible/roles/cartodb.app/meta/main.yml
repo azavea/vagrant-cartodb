@@ -2,3 +2,4 @@
 
 dependencies:
  - { role: "cartodb.app.dependencies" }
+ - { role: "cartodb.nginx" }
