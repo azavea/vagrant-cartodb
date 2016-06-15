@@ -11,11 +11,11 @@ defaults: &defaults
   session_domain:     '.localhost.lan'
   # If activated, urls will use usernames in format //SESSION_DOMAIN/user/USERNAME and ignore subdomains if present
   subdomainless_urls: false
-  http_port:           3000 # nil|integer. HTTP port to use when building urls. Leave empty to use default (80)
+  http_port:           {{ cartodb_http_port }} # nil|integer. HTTP port to use when building urls. Leave empty to use default (80)
   https_port:          # nil|integer. HTTPS port to use when building urls. Leave empty to use default (443)
   maps_api_cdn_template: # nil|string. E.g. '{protocol}://{zone}.cartocdn/{user}' (`/api/v1/...` fragment added via code)
   secret_token:       '71c2b25921b84a1cb21c71503ab8fb23'
-  account_host:       'localhost.lan:3000'
+  account_host:       'localhost.lan:{{ cartodb_http_port }}'
   account_path:       '/account'
   disable_file:       '~/disable'
   watcher:
@@ -50,7 +50,7 @@ defaults: &defaults
       endpoint:   '/api/v2/sql'
       port:       8080
   api_requests_service_url: ''
-  developers_host:    'http://developers.localhost.lan:3000'
+  developers_host:    'http://developers.localhost.lan:{{ cartodb_http_port }}'
   google_analytics:
     primary:          ''
     embeds:           ''
@@ -146,7 +146,7 @@ defaults: &defaults
       redis_migrator_logs: 6
   org_metadata_api:
     host: 'localhost.lan'
-    port: '3000'
+    port: '{{ cartodb_http_port }}'
     username: "extension"
     password: "elephant"
     timeout: 10
@@ -449,7 +449,6 @@ defaults: &defaults
 
 development:
   <<: *defaults
-  http_port: 3000
   varnish_management:
     critical: false
     host: '127.0.0.1'

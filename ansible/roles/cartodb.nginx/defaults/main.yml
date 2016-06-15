@@ -1,0 +1,7 @@
+---
+
+nginx_sites_available:
+  - "cartodb"
+
+nginx_sites_enabled:
+  - "cartodb"
