@@ -103,7 +103,9 @@ defaults: &defaults
   common_data:
     protocol: '{{ cartodb_common_data_protocol }}'
     username: '{{ cartodb_common_data_username }}'
-{% if not cartodb_common_data_local %}    base_url: '{{ cartodb_common_data_base_url }}'{% endif %}
+{% if not cartodb_common_data_local %}
+    base_url: '{{ cartodb_common_data_base_url }}'
+{% endif %}
     format: '{{ cartodb_common_data_format }}'
     generate_every: {{ cartodb_common_data_generate_every }}
   explore_api:
