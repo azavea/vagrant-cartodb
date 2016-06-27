@@ -23,6 +23,15 @@ git clone --recursive https://github.com/cartodb/cartodb ../cartodb
 If this path is already in use for some reason, you can clone the repo elsewhere,
 and set the `CARTODB_SRC_DIR` env variable before running `vagrant up`.
 
+##### Note to OS X users
+The stock version of git for OS X El Capitan, `2.7.4 (Apple Git-66)`, behaves differently
+when recursively cloning repositories than other versions of git. This can result in the
+submodules being created using absolute paths internally, which will prevent the Vagrant
+environment from provisioning correctly. To avoid this, clone the repository and the submodules
+separately as two steps:
+```
+(git clone https://github.com/cartodb/cartodb ../cartodb && cd ../cartodb && git submodule update --init --recursive)
+```
 
 #### Copy configuration
 
