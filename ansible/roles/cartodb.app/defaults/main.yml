@@ -1,3 +1,10 @@
 ---
 
 cartodb_http_port: 80
+
+cartodb_fdw_host: ''
+cartodb_fdw_port: 5432
+cartodb_fdw_database: ''
+cartodb_fdw_username: 'fdwuser'
+cartodb_fdw_password: 'cartodb_fdw'
+cartodb_fdw_remote_schema: 'public'

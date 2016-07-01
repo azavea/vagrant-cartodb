@@ -108,6 +108,13 @@ defaults: &defaults
 {% endif %}
     format: '{{ cartodb_common_data_format }}'
     generate_every: {{ cartodb_common_data_generate_every }}
+  fdw:
+    host: '{{ cartodb_fdw_host }}'
+    port: {{ cartodb_fdw_port }}
+    database: '{{ cartodb_fdw_database }}'
+    username: '{{ cartodb_fdw_username }}'
+    password: '{{ cartodb_fdw_password }}'
+    remote_schema: '{{ cartodb_fdw_remote_schema }}'
   explore_api:
     username: ''
   reports:
