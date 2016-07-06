@@ -44,6 +44,13 @@
      chdir: "{{ cartodb_dir }}"
    when: cartodb_common_data_local
 
+ - name: Move common data user to its own schema
+   command: bundle exec rake cartodb:db:move_user_to_schema['{{ cartodb_common_data_username }}']
+   become_user: "{{ ansible_ssh_user }}"
+   args:
+     chdir: "{{ cartodb_dir }}"
+   when: cartodb_common_data_local
+
  - name: Remove table limit for common data user
    command: bundle exec rake cartodb:db:remove_table_quota USER_NAME="{{ cartodb_common_data_username }}"
    become_user: "{{ ansible_ssh_user }}"
