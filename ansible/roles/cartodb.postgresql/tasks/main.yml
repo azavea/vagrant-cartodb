@@ -23,6 +23,9 @@
  - name: Configure PostgreSQL host-based authentication
    template: src=pg_hba.conf.j2 dest=/etc/postgresql/{{ postgresql_version }}/main/pg_hba.conf
 
+ - name: Configure PostgreSQL conf
+   template: src=postgresql.conf.j2 dest=/etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+
  # Need to force a restart now so that auth settings take effect for all future tasks
  #   Otherwise, things like `bundle exec rake db:create` will hang asking for a password
  # Ansible docs say that 'These notify actions are triggered at the end of each block of tasks
