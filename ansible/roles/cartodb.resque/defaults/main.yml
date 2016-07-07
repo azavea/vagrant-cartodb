@@ -1,4 +1,4 @@
 ---
 
 cartodb_resque_pid_dir: "{{ cartodb_dir }}/tmp/pids"
-cartodb_resque_workers: 2
+cartodb_resque_workers: 1
