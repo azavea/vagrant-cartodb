@@ -37,6 +37,7 @@ cartodb_common_data_local: False
 cartodb_common_data_user_email: commondata@example.com
 cartodb_common_data_user_password: cartodb
 cartodb_common_data_user_data_quota: 20.gigabytes
+cartodb_common_data_api_key: ''
 # If configuring fdw, you'll need to set cartodb_fdw_database after first provision
 # If you don't have an external server, you'll need to set it to the database name of the
 # commondata user that gets created above
@@ -60,6 +61,8 @@ cartodb_common_data_username: 'common-data'
 cartodb_common_data_base_url: 'https://common-data.cartodb.com'
 cartodb_common_data_format: 'shp'
 cartodb_common_data_generate_every: 86400
+
+cartodb_add_org_account: True
 
 # cartodb.sqlapi
 cartodb_sqlapi_dir: "{{ root_dir }}/cartodb_sql_api"
