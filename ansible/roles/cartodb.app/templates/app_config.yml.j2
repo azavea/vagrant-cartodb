@@ -108,6 +108,7 @@ defaults: &defaults
 {% endif %}
     format: '{{ cartodb_common_data_format }}'
     generate_every: {{ cartodb_common_data_generate_every }}
+    api_key: '{{ cartodb_common_data_api_key }}'
   fdw:
     host: '{{ cartodb_fdw_host }}'
     port: {{ cartodb_fdw_port }}

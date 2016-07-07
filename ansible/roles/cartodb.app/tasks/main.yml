@@ -82,5 +82,23 @@
  - debug: var=import_result.stdout_lines
    when: cartodb_common_data_import
 
+ - name: Clear common data for development user
+   command: bundle exec rake cartodb:remotes:clear['{{ cartodb_user_subdomain }}']
+   become_user: "{{ ansible_ssh_user }}"
+   args:
+     chdir: "{{ cartodb_dir }}"
+   when: cartodb_common_data_import
+
+ - name: Reload common data for development user
+   command: bundle exec rake cartodb:remotes:reload['{{ cartodb_user_subdomain }}']
+   become_user: "{{ ansible_ssh_user }}"
+   args:
+     chdir: "{{ cartodb_dir }}"
+   when: cartodb_common_data_import
+
+ - include: setup_fdw.yml
+
+ - include: add_org_account.yml
+
  - name: Start the CartoDB rails server
    service: name=cartodb_server state=restarted

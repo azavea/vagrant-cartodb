@@ -1,0 +1,79 @@
+root_dir: /opt
+cartodb_dir: "{{ root_dir }}/cartodb"
+vm_private_ip: 192.168.20.100
+
+# azavea.python
+python_version: 2.7.3-0ubuntu2.2
+python_development: True
+
+# azavea.pip
+pip_version: 1.0*-1build1
+
+# azavea.ruby
+ruby_version: 2.2
+ruby_development: True
+
+
+# cartodb.postgresql
+postgresql_version: 9.5
+postgresql_port: 5432
+postgresql_listen_addresses: 'localhost,{{ vm_private_ip }}'
+postgresql_hba_mapping:
+  - { type: "local", database: "all", user: "all", address: "", method: "trust" }
+  - { type: "local", database: "all", user: "postgres", address: "", method: "trust" }
+  - { type: "host", database: "all", user: "all", address: "127.0.0.1/32", method: "trust" }
+  - { type: "host", database: "all", user: "fdwuser", address: "{{ vm_private_ip }}/32", method: "md5" }
+cartodb_postgresql_dir: "{{ cartodb_dir }}/lib/sql"
+
+# cartodb.app
+# TODO: Support other RAILS_ENV configurations (staging|production)
+# TODO: Properly template cartodb_hostname into app_config and database config
+cartodb_environment: development
+cartodb_hostname: localhost.lan
+cartodb_user_subdomain: development
+cartodb_user_password: cartodb
+cartodb_user_admin_password: cartodb
+cartodb_user_email: cartodb@example.com
+cartodb_compile_assets: True
+
+# local account for common datasets; set cartodb_common_data_local to True to import to local account
+cartodb_common_data_local: True
+cartodb_common_data_user_email: commondata@example.com
+cartodb_common_data_user_password: cartodb
+cartodb_common_data_user_data_quota: 20.gigabytes
+
+# whether to import common datasets to local account as part of provision
+# Enabling this flag uses rake tasks not provided by the CartoDB repository.
+# Also set cartodb_common_base_url to 'http://commondata.localhost.lan' for local data source.
+# This flag should only be true if cartodb_common_data_local is also true.
+cartodb_common_data_import: True
+
+# cartodb app_config.yml
+cartodb_cdn_assets: False
+cartodb_common_data_protocol: 'http'
+cartodb_common_data_username: 'commondata'
+cartodb_common_data_base_url: 'http://commondata.localhost.lan'
+cartodb_common_data_format: 'shp'
+cartodb_common_data_generate_every: 86400
+cartodb_common_data_api_key: ''
+# If configuring fdw, you'll need to set cartodb_fdw_database after first provision
+# If you don't have an external server, you'll need to set it to the database name of the
+# commondata user that gets created above
+cartodb_fdw_host: '{{ vm_private_ip }}'
+cartodb_fdw_port: 5432
+cartodb_fdw_database: ''
+cartodb_fdw_username: 'fdwuser'
+cartodb_fdw_password: 'cartodb_fdw'
+cartodb_fdw_remote_schema: '{{ cartodb_common_data_username }}'
+
+cartodb_add_org_account: True
+
+# cartodb.sqlapi
+cartodb_sqlapi_dir: "{{ root_dir }}/cartodb_sql_api"
+cartodb_sqlapi_version: 1.27.0
+cartodb_sqlapi_host: 0.0.0.0
+
+# cartodb.windshaft
+cartodb_windshaft_dir: "{{ root_dir }}/cartodb_windshaft"
+cartodb_windshaft_version: 2.31.2
+cartodb_windshaft_host: 0.0.0.0

@@ -1,0 +1,39 @@
+---
+
+ - name: Get commondata database name
+   command: psql -d carto_db_development -t -c "select database_name from users where username='{{ cartodb_common_data_username }}'"
+   become_user: postgres
+   register: cartodb_fdw_database_result
+   when: cartodb_common_data_local
+
+ - name: Get commondata user id
+   command: psql -d carto_db_development -t -c "select id from users where username='{{ cartodb_common_data_username }}'"
+   become_user: postgres
+   register: cartodb_common_data_user_id_result
+   when: cartodb_common_data_local
+
+ - name: Get commondata API key
+   command: psql -d carto_db_development -t -c "select api_key from users where username='{{ cartodb_common_data_username }}'"
+   become_user: postgres
+   register: cartodb_common_data_api_key_result
+   when: cartodb_common_data_local
+
+ - name: Set local variables needed for further tasks
+   set_fact:
+     cartodb_fdw_database: "{{ cartodb_fdw_database_result.stdout.strip() }}"
+     cartodb_common_data_user_id: "{{ cartodb_common_data_user_id_result.stdout.strip() }}"
+     cartodb_common_data_api_key: "{{ cartodb_common_data_api_key_result.stdout.strip() }}"
+   when: cartodb_common_data_local
+
+ - name: Add a foreign data wrapper user to the commondata database
+   postgresql_user: db="{{ cartodb_fdw_database }}" user="{{ cartodb_fdw_username }}" encrypted=yes password="{{ cartodb_fdw_password }}"
+   when: cartodb_common_data_local
+
+ - name: Add foreign data wrapper user to commondata database cartodb user role
+   command: psql -d "{{ cartodb_fdw_database }}" -c "GRANT \"development_cartodb_user_{{ cartodb_common_data_user_id }}\" TO fdwuser"
+   become_user: postgres
+   when: cartodb_common_data_local
+
+ - name: Reload app_config.yml template with new settings (commondata api key, fdw user database)
+   template: src=app_config.yml.j2 dest="{{ cartodb_dir }}/config/app_config.yml"
+   when: cartodb_common_data_local
