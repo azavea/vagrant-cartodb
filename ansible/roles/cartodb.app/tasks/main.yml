@@ -7,6 +7,10 @@
      chdir: "{{ cartodb_dir }}"
    when: cartodb_compile_assets
 
+ - name: Ensure cartodb log dir exists
+   file: path="{{ cartodb_dir }}/log" state=directory
+   become_user: "{{ ansible_ssh_user }}"
+
  - name: Touch app_config.yml to ensure it exists
    file: path="{{ cartodb_dir }}/config/app_config.yml" state=touch
 
