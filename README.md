@@ -45,9 +45,20 @@ cp ansible/group_vars/all.example ansible/group_vars/all
 Add the following entries in your hosts file to point to the VM:
 ```
 192.168.20.100 development.localhost.lan
-192.168.20.100 test.localhost.lan
 192.168.20.100 commondata.localhost.lan
 192.168.20.100 localhost.lan
+```
+
+If planning on using the organization account, you'll also need to add the following to your
+hosts file:
+```
+192.168.20.100 test.localhost.lan
+192.168.20.100 test-admin.localhost.lan
+192.168.20.100 test-1.localhost.lan
+192.168.20.100 test-2.localhost.lan
+192.168.20.100 test-3.localhost.lan
+192.168.20.100 test-4.localhost.lan
+192.168.20.100 test-5.localhost.lan
 ```
 
 ## Using the VM
