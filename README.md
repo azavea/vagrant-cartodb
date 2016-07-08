@@ -108,3 +108,15 @@ If you would like to use a different tag of the cartodb repo, be sure to change 
 versions of the sql api and windshaft in `ansible/group_vars/all`
 
 Ensure you reprovision after making any changes to the ansible settings.
+
+
+## Troubleshooting
+
+#### Data Library doesn't load on the dashboard
+
+If for some reason after provision, the data library in the development account does not load
+when you first navigate to your dashboard, try executing:
+```
+cd /opt/cartodb && bundle exec rake cartodb:remotes:reload['development']
+```
+inside the VM. Then navigate back to your dashboard once the rake task completes.
