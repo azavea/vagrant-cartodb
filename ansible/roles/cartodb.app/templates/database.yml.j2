@@ -29,7 +29,11 @@ development:
   database: carto_db_development
   username: postgres
   password:
+{% if cartodb_add_org_account %}
+  conn_validator_timeout: -1
+{% else %}
   conn_validator_timeout: 900
+{% endif %}
   pool: 50
 
 test:

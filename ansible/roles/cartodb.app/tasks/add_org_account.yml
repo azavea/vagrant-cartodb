@@ -1,0 +1,14 @@
+---
+
+ - name: Add org test account
+   command: bundle exec rake cartodb:db:create_test_organization['test','5']
+   become_user: "{{ ansible_ssh_user }}"
+   register: create_org_result
+   failed_when: "create_org_result.stderr != '' and 'name is already taken' not in create_org_result.stderr"
+   args:
+     chdir: "{{ cartodb_dir }}"
+   when: cartodb_add_org_account
+
+ - name: Add test org user subdomain to hosts file
+   lineinfile: dest=/etc/hosts line="127.0.0.1 test.{{ cartodb_hostname }}"
+   when: cartodb_add_org_account

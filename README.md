@@ -45,22 +45,39 @@ cp ansible/group_vars/all.example ansible/group_vars/all
 Add the following entries in your hosts file to point to the VM:
 ```
 192.168.20.100 development.localhost.lan
+192.168.20.100 commondata.localhost.lan
 192.168.20.100 localhost.lan
+```
+
+If planning on using the organization account, you'll also need to add the following to your
+hosts file:
+```
+192.168.20.100 test.localhost.lan
+192.168.20.100 test-admin.localhost.lan
+192.168.20.100 test-1.localhost.lan
+192.168.20.100 test-2.localhost.lan
+192.168.20.100 test-3.localhost.lan
+192.168.20.100 test-4.localhost.lan
+192.168.20.100 test-5.localhost.lan
 ```
 
 ## Using the VM
 
-Run `vagrant up`, wait for the machine to provision, then navigate to http://development.localhost.lan:3000/login
+Run `vagrant up`, wait for the machine to provision, then navigate to http://development.localhost.lan/login
 and login with:
  - Username: development
  - Password: cartodb
+
+ Alternatively, if `cartodb_add_org_account: true` in ansible settings, you can navigate to http://test.localhost.lan/login
+ and login with usernames `test-admin, test-1, test-2, test-3, test-4, test-5` where the password for each account
+ is the same as the username.
 
 #### Services in the VM
 
 The cartodb services (unicorn, resque, sql api, windshaft) are controlled via upstart. The service
 names are:
 - `cartodb_server` - Unicorn web worker processes
-- `cartodb_resque_worker` - A single resque worker process (the VM runs two)
+- `cartodb_resque_worker` - A single resque worker process (the VM runs one but it can be configured via `cartodb_resque_workers` ansible setting)
 - `cartodb_windshaft` - Windshaft server
 - `cartodb_sqlapi` - CartoDB SQL API server
 
@@ -91,3 +108,15 @@ If you would like to use a different tag of the cartodb repo, be sure to change 
 versions of the sql api and windshaft in `ansible/group_vars/all`
 
 Ensure you reprovision after making any changes to the ansible settings.
+
+
+## Troubleshooting
+
+#### Data Library doesn't load on the dashboard
+
+If for some reason after provision, the data library in the development account does not load
+when you first navigate to your dashboard, try executing:
+```
+cd /opt/cartodb && bundle exec rake cartodb:remotes:reload['development']
+```
+inside the VM. Then navigate back to your dashboard once the rake task completes.
