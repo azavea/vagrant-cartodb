@@ -30,7 +30,7 @@
    when: cartodb_common_data_local
 
  - name: Add foreign data wrapper user to commondata database cartodb user role
-   command: psql -d "{{ cartodb_fdw_database }}" -c "GRANT \"development_cartodb_user_{{ cartodb_common_data_user_id }}\" TO fdwuser"
+   command: psql -d "{{ cartodb_fdw_database }}" -c "GRANT \"development_cartodb_user_{{ cartodb_common_data_user_id }}\" TO {{ cartodb_fdw_username }}"
    become_user: postgres
    when: cartodb_common_data_local
 
