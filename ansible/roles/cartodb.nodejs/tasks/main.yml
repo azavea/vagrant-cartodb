@@ -5,3 +5,6 @@
 
  - name: Install nodejs 0.10.x
    apt: name=nodejs state=present
+
+ - name: Update npm -- Carto requires 2.14.x to build cartodb.js
+   npm: name=npm global=yes version={{ cartodb_npm_version }}
