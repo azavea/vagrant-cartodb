@@ -1,5 +1,6 @@
 ---
 
+cartodb_hostname: 'localhost.lan'
 cartodb_http_port: 80
 
 cartodb_common_data_api_key: ''

@@ -8,14 +8,14 @@ defaults: &defaults
     csv_guessing:     false
   debug_assets: true
   mandatory_keys:     [layer_opts, sql_api, varnish_management, redis, session_domain]
-  session_domain:     '.localhost.lan'
+  session_domain:     '.{{ cartodb_hostname }}'
   # If activated, urls will use usernames in format //SESSION_DOMAIN/user/USERNAME and ignore subdomains if present
   subdomainless_urls: false
   http_port:           {{ cartodb_http_port }} # nil|integer. HTTP port to use when building urls. Leave empty to use default (80)
   https_port:          # nil|integer. HTTPS port to use when building urls. Leave empty to use default (443)
   maps_api_cdn_template: # nil|string. E.g. '{protocol}://{zone}.cartocdn/{user}' (`/api/v1/...` fragment added via code)
   secret_token:       '71c2b25921b84a1cb21c71503ab8fb23'
-  account_host:       'localhost.lan:{{ cartodb_http_port }}'
+  account_host:       '{{ cartodb_hostname }}:{{ cartodb_http_port }}'
   account_path:       '/account'
   disable_file:       '~/disable'
   watcher:
@@ -24,33 +24,33 @@ defaults: &defaults
     filter: 'mapnik'
     internal:
       protocol:      'http'
-      domain:        'localhost.lan'
+      domain:        '{{ cartodb_hostname }}'
       port:          '8181'
       host:          '127.0.0.1'
       verifycert:     false
     private:
       protocol:      'http'
-      domain:        'localhost.lan'
+      domain:        '{{ cartodb_hostname }}'
       port:          '8181'
       verifycert:     false
     public:
       protocol:      'http'
-      domain:        'localhost.lan'
+      domain:        '{{ cartodb_hostname }}'
       port:          '8181'
       verifycert:     false
   sql_api:
     private:
       protocol:   'http'
-      domain:     'localhost.lan'
+      domain:     '{{ cartodb_hostname }}'
       endpoint:   '/api/v1/sql'
       port:       8080
     public:
       protocol:   'http'
-      domain:     'localhost.lan'
+      domain:     '{{ cartodb_hostname }}'
       endpoint:   '/api/v2/sql'
       port:       8080
   api_requests_service_url: ''
-  developers_host:    'http://developers.localhost.lan:{{ cartodb_http_port }}'
+  developers_host:    'http://developers.{{ cartodb_hostname }}:{{ cartodb_http_port }}'
   google_analytics:
     primary:          ''
     embeds:           ''
@@ -155,7 +155,7 @@ defaults: &defaults
       users_metadata:      5
       redis_migrator_logs: 6
   org_metadata_api:
-    host: 'localhost.lan'
+    host: '{{ cartodb_hostname }}'
     port: '{{ cartodb_http_port }}'
     username: "extension"
     password: "elephant"
@@ -221,10 +221,10 @@ defaults: &defaults
         interactivity:      "cartodb_id"
         debug:              false
         visible:            true
-        tiler_domain:       "localhost.lan"
+        tiler_domain:       "{{ cartodb_hostname }}"
         tiler_port:         "80"
         tiler_protocol:     "http"
-        sql_domain:         "localhost.lan"
+        sql_domain:         "{{ cartodb_hostname }}"
         sql_port:           "80"
         sql_protocol:       "http"
         extra_params:       { cache_policy: 'persist' }
@@ -477,7 +477,7 @@ test:
     port: 6335
   enforce_non_empty_layer_css: false
   api_requests_es_service:
-    url: "http://api-calls-service.localhost.lan/search"
+    url: "http://api-calls-service.{{ cartodb_hostname }}/search"
     body: ""
 
 staging:
